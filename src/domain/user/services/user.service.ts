@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/application/user/dtos/create-user.dto';
-import { User } from '../../entities/user.entity';
+import { User } from '../entities/user.entity';
 import { UserRepository } from 'src/infrastructure/repositories/user.repository';
 import { UserType, UserUpdateInput } from 'src/types/user.types';
 import { CustomError } from 'src/utils/error';
