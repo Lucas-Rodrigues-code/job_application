@@ -1,37 +1,33 @@
-import { Injectable } from '@nestjs/common';
-import { User } from '../../domain/user/entities/user.entity';
-import { UserUpdateInput } from 'src/types/user.types';
+import { Inject, Injectable } from '@nestjs/common';
+import { UserType, UserUpdateInput } from 'src/types/user.types';
+import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
 export class UserRepository {
-  private users: User[] = []; // Simulando o banco de dados
+  @Inject()
+  private readonly prisma: PrismaService;
 
-  async save(user: User): Promise<User> {
-    user.id = this.users.length + 1; // Simulando geração de ID
-    this.users.push(user);
-    return user;
+  async save(user: UserType): Promise<UserType> {
+    return await this.prisma.user.create({ data: user });
   }
 
-  async findByEmail(email: string): Promise<User | undefined> {
-    return this.users.find((user) => user.email === email);
+  async findByEmail(email: string): Promise<UserType | undefined> {
+    return this.prisma.user.findFirst({ where: { email } });
   }
 
-  async findAll(): Promise<User[]> {
-    return this.users;
+  async findAll(): Promise<UserType[]> {
+    return await this.prisma.user.findMany();
   }
 
-  async findById(id: number): Promise<User | undefined> {
-    return this.users.find((user) => user.id === id);
+  async findById(id: number): Promise<UserType | undefined> {
+    return this.prisma.user.findUnique({ where: { id } });
   }
 
-  async delete(id: number): Promise<void> {
-    this.users = this.users.filter((user) => user.id !== id);
+  async delete(id: number): Promise<UserType> {
+    return this.prisma.user.delete({ where: { id } });
   }
 
-  async update(id: number, body: UserUpdateInput): Promise<User> {
-    const index = this.users.findIndex((u) => u.id === id);
-    this.users[index].email = body.email;
-    this.users[index].name = body.name;
-    return this.users[index];
+  async update(id: number, body: UserUpdateInput): Promise<UserType> {
+    return this.prisma.user.update({ where: { id }, data: body });
   }
 }

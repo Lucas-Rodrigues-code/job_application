@@ -2,18 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/application/user/dtos/create-user.dto';
 import { User } from '../../entities/user.entity';
 import { UserRepository } from 'src/infrastructure/repositories/user.repository';
-import { UserUpdateInput } from 'src/types/user.types';
+import { UserType, UserUpdateInput } from 'src/types/user.types';
+import { CustomError } from 'src/utils/error';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<UserType> {
     const existingUser = await this.userRepository.findByEmail(
       createUserDto.email,
     );
     if (existingUser) {
-      throw new Error('E-mail já está em uso.');
+      throw new CustomError('E-mail is already in use!', 400);
     }
 
     const newUser = new User(
@@ -25,30 +26,30 @@ export class UserService {
     return this.userRepository.save(newUser);
   }
 
-  async getUsers(): Promise<User[]> {
+  async getUsers(): Promise<UserType[]> {
     return this.userRepository.findAll();
   }
 
-  async getUser(id: number): Promise<User> {
+  async getUser(id: number): Promise<UserType> {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new Error('Usuário não encontrado.');
+      throw new CustomError('User not found', 400);
     }
     return user;
   }
 
-  async updateUser(id: number, body: UserUpdateInput): Promise<User> {
+  async updateUser(id: number, body: UserUpdateInput): Promise<UserType> {
     const userExist = await this.userRepository.findById(id);
     if (!userExist) {
-      throw new Error('Usuário não encontrado.');
+      throw new CustomError('User not found', 400);
     }
     return this.userRepository.update(id, body);
   }
 
-  async deleteUser(id: number): Promise<void> {
+  async deleteUser(id: number): Promise<UserType> {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new Error('Usuário não encontrado.');
+      throw new CustomError('User not found', 400);
     }
     return this.userRepository.delete(id);
   }
