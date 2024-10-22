@@ -15,7 +15,7 @@ export class JobApplicationService {
     return this.jobApplicationRepository.findAll();
   }
 
-  async getById(id: number): Promise<JobApplication> {
+  async getById(id: string): Promise<JobApplication> {
     const jobApplication = await this.jobApplicationRepository.findById(id);
     if (!jobApplication) {
       throw new CustomError('Not found', 400);
@@ -31,7 +31,7 @@ export class JobApplicationService {
     return this.jobApplicationRepository.save(newJobApplication);
   }
 
-  async update(id: number, body: any): Promise<JobApplication> {
+  async update(id: string, body: any): Promise<JobApplication> {
     const JobApplication = await this.jobApplicationRepository.findById(id);
     if (!JobApplication) {
       throw new CustomError('Not found', 400);
@@ -39,7 +39,7 @@ export class JobApplicationService {
     return this.jobApplicationRepository.update(id, body);
   }
 
-  async delete(id: number): Promise<JobApplication> {
+  async delete(id: string): Promise<JobApplication> {
     const jobApplication = await this.jobApplicationRepository.findById(id);
     if (!jobApplication) {
       throw new CustomError('Not found', 400);

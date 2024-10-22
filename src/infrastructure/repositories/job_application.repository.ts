@@ -11,29 +11,30 @@ export class JobApplicationRepository {
     return await this.prisma.jobApplication.findMany();
   }
 
-  async findById(id: number): Promise<JobApplication | undefined> {
+  async findById(id: string): Promise<JobApplication | undefined> {
     return this.prisma.jobApplication.findUnique({ where: { id } });
   }
 
   async save(jobApplication: JobApplication): Promise<any> {
     return await this.prisma.jobApplication.create({
       data: {
+        id: jobApplication.id,
         companyName: jobApplication.companyName,
         position: jobApplication.position,
         applicationDate: jobApplication.applicationDate,
         status: jobApplication.status,
         notes: jobApplication.notes,
         updatedAt: jobApplication.updatedAt,
-        userId: 1, // implementar id do usuário logado
+        userId: '1', // implementar id do usuário logado
       },
     });
   }
 
-  async update(id: number, body: JobApplication): Promise<JobApplication> {
+  async update(id: string, body: JobApplication): Promise<JobApplication> {
     return this.prisma.jobApplication.update({ where: { id }, data: body });
   }
 
-  async delete(id: number): Promise<JobApplication> {
+  async delete(id: string): Promise<JobApplication> {
     return this.prisma.jobApplication.delete({ where: { id } });
   }
 }

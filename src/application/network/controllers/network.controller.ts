@@ -22,7 +22,7 @@ export class NetworkController {
   }
 
   @Get(':id')
-  async getById(@Param('id', ParseIntPipe) id: number) {
+  async getById(@Param('id') id: string) {
     return this.networkService.getById(id);
   }
 
@@ -33,7 +33,7 @@ export class NetworkController {
 
   @Put(':id')
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body()
     updateUserDto: UpdateNetworkingDto,
   ) {
@@ -41,7 +41,7 @@ export class NetworkController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
+  async delete(@Param('id') id: string) {
     return this.networkService.delete(id);
   }
 }

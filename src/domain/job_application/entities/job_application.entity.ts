@@ -1,4 +1,4 @@
-import { JobApplication } from 'src/types/job-application';
+import { BaseEntity } from 'src/shared/domain/entity/base.entity';
 
 type JobApplicationProps = {
   companyName: string;
@@ -8,8 +8,7 @@ type JobApplicationProps = {
   notes: string;
 };
 
-export class JoBApplicationEntity {
-  id: number;
+export class JoBApplicationEntity extends BaseEntity {
   companyName: string;
   position: string;
   applicationDate: Date;
@@ -19,12 +18,11 @@ export class JoBApplicationEntity {
   updatedAt: Date;
 
   constructor(jobApplication: JobApplicationProps) {
+    super();
     this.companyName = jobApplication.companyName;
     this.position = jobApplication.position;
     this.applicationDate = jobApplication.applicationDate;
     this.status = jobApplication.status;
     this.notes = jobApplication.notes;
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
   }
 }

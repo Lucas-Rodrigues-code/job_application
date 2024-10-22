@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(uuid())
   email           String           @unique
   password        String
   name            String
@@ -24,7 +24,7 @@ model User {
 }
 
 model JobApplication {
-  id              Int         @id @default(autoincrement())
+  id              String      @id @default(uuid())
   companyName     String
   position        String
   applicationDate DateTime
@@ -33,13 +33,13 @@ model JobApplication {
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   networking      Networking? @relation(fields: [networkingId], references: [id])
-  networkingId    Int?
+  networkingId    String?
   user            User        @relation(fields: [userId], references: [id])
-  userId          Int
+  userId          String
 }
 
 model Networking {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(uuid())
   personName      String
   company         String
   contactDate     DateTime

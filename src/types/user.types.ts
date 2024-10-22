@@ -4,7 +4,7 @@ export type UserUpdateInput = {
 };
 
 export type UserType = {
-  id: number;
+  id: string;
   name: string;
   email: string;
   password: string;

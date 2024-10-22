@@ -30,7 +30,7 @@ export class UserService {
     return this.userRepository.findAll();
   }
 
-  async getUser(id: number): Promise<UserType> {
+  async getUser(id: string): Promise<UserType> {
     const user = await this.userRepository.findById(id);
     if (!user) {
       throw new CustomError('User not found', 400);
@@ -38,7 +38,7 @@ export class UserService {
     return user;
   }
 
-  async updateUser(id: number, body: UserUpdateInput): Promise<UserType> {
+  async updateUser(id: string, body: UserUpdateInput): Promise<UserType> {
     const userExist = await this.userRepository.findById(id);
     if (!userExist) {
       throw new CustomError('User not found', 400);
@@ -46,7 +46,7 @@ export class UserService {
     return this.userRepository.update(id, body);
   }
 
-  async deleteUser(id: number): Promise<UserType> {
+  async deleteUser(id: string): Promise<UserType> {
     const user = await this.userRepository.findById(id);
     if (!user) {
       throw new CustomError('User not found', 400);

@@ -22,7 +22,7 @@ export class JobApplicationController {
   }
 
   @Get(':id')
-  async getById(@Param('id', ParseIntPipe) id: number) {
+  async getById(@Param('id') id: string) {
     return this.jobApplicationService.getById(id);
   }
 
@@ -33,7 +33,7 @@ export class JobApplicationController {
 
   @Put(':id')
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body()
     updateJobApplicationDto: UpdateJobApplicationDto,
   ) {
@@ -41,7 +41,7 @@ export class JobApplicationController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
+  async delete(@Param('id') id: string) {
     return this.jobApplicationService.delete(id);
   }
 }

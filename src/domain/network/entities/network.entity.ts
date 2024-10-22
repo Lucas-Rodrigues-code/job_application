@@ -1,11 +1,10 @@
-export class NetworkEntity {
-  id: number;
+import { BaseEntity } from 'src/shared/domain/entity/base.entity';
+
+export class NetworkEntity extends BaseEntity {
   personName: string;
   company: string;
   contactDate: Date;
   notes: string;
-  createdAt: Date;
-  updatedAt: Date;
 
   constructor(
     personName: string,
@@ -13,11 +12,10 @@ export class NetworkEntity {
     contactDate: Date,
     notes: string,
   ) {
+    super();
     this.personName = personName;
     this.company = company;
     this.contactDate = contactDate;
     this.notes = notes;
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
   }
 }

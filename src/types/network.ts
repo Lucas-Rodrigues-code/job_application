@@ -1,5 +1,5 @@
 export type Network = {
-  id: number;
+  id: string;
   personName: string;
   company: string;
   contactDate: Date;

@@ -11,13 +11,14 @@ export class NetworkRepository {
     return await this.prisma.networking.findMany();
   }
 
-  async findById(id: number): Promise<Network | undefined> {
+  async findById(id: string): Promise<Network | undefined> {
     return this.prisma.networking.findUnique({ where: { id } });
   }
 
   async save(networkingProps: Network): Promise<Network> {
     return await this.prisma.networking.create({
       data: {
+        id: networkingProps.id,
         personName: networkingProps.personName,
         company: networkingProps.company,
         contactDate: networkingProps.contactDate,
@@ -26,11 +27,11 @@ export class NetworkRepository {
     });
   }
 
-  async update(id: number, body: Network): Promise<Network> {
+  async update(id: string, body: Network): Promise<Network> {
     return this.prisma.networking.update({ where: { id }, data: body });
   }
 
-  async delete(id: number): Promise<Network> {
+  async delete(id: string): Promise<Network> {
     return this.prisma.networking.delete({ where: { id } });
   }
 }

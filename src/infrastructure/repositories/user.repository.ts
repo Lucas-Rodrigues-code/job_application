@@ -8,7 +8,14 @@ export class UserRepository {
   private readonly prisma: PrismaService;
 
   async save(user: UserType): Promise<UserType> {
-    return await this.prisma.user.create({ data: user });
+    return await this.prisma.user.create({
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+      },
+    });
   }
 
   async findByEmail(email: string): Promise<UserType | undefined> {
@@ -19,15 +26,15 @@ export class UserRepository {
     return await this.prisma.user.findMany();
   }
 
-  async findById(id: number): Promise<UserType | undefined> {
+  async findById(id: string): Promise<UserType | undefined> {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-  async delete(id: number): Promise<UserType> {
+  async delete(id: string): Promise<UserType> {
     return this.prisma.user.delete({ where: { id } });
   }
 
-  async update(id: number, body: UserUpdateInput): Promise<UserType> {
+  async update(id: string, body: UserUpdateInput): Promise<UserType> {
     return this.prisma.user.update({ where: { id }, data: body });
   }
 }

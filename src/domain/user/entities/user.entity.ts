@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
+import { BaseEntity } from 'src/shared/domain/entity/base.entity';
 
-export class User {
-  id: number;
+export class User extends BaseEntity {
   name: string;
   email: string;
   password: string;
@@ -9,11 +9,10 @@ export class User {
   updatedAt: Date;
 
   constructor(name: string, email: string, password: string) {
+    super();
     this.name = name;
     this.email = email;
     this.password = this.hashPassword(password);
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
 
     if (!this.isValidEmail()) {
       throw new Error('Invalid email address');

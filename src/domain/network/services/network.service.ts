@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { NetworkEntity } from '../entities/network.entity';
 
-import { UserType, UserUpdateInput } from 'src/types/user.types';
 import { CustomError } from 'src/utils/error';
 import { CreateNetworkingDto } from 'src/application/network/dtos/create-network.dto';
 import { NetworkRepository } from 'src/infrastructure/repositories/network.repository';
@@ -18,7 +17,7 @@ export class NetworkService {
       createNetworkingDto.contactDate,
       createNetworkingDto.notes,
     );
-
+    console.log(newNetwork);
     return this.networkRepository.save(newNetwork);
   }
 
@@ -26,7 +25,7 @@ export class NetworkService {
     return this.networkRepository.findAll();
   }
 
-  async getById(id: number): Promise<Network> {
+  async getById(id: string): Promise<Network> {
     const network = await this.networkRepository.findById(id);
     if (!network) {
       throw new CustomError('Not found', 400);
@@ -34,7 +33,7 @@ export class NetworkService {
     return network;
   }
 
-  async update(id: number, body: any): Promise<Network> {
+  async update(id: string, body: any): Promise<Network> {
     const networkExist = await this.networkRepository.findById(id);
     if (!networkExist) {
       throw new CustomError('User not found', 400);
@@ -42,7 +41,7 @@ export class NetworkService {
     return this.networkRepository.update(id, body);
   }
 
-  async delete(id: number): Promise<Network> {
+  async delete(id: string): Promise<Network> {
     const network = await this.networkRepository.findById(id);
     if (!network) {
       throw new CustomError('User not found', 400);

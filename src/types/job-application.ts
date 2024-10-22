@@ -1,5 +1,5 @@
 export type JobApplication = {
-  id: number;
+  id: string;
   companyName: string;
   position: string;
   applicationDate: Date;
