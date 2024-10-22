@@ -1,4 +1,6 @@
-type JoBApplication = {
+import { JobApplication } from 'src/types/job-application';
+
+type JobApplicationProps = {
   companyName: string;
   position: string;
   applicationDate: Date;
@@ -16,7 +18,7 @@ export class JoBApplicationEntity {
   createdAt: Date;
   updatedAt: Date;
 
-  constructor(jobApplication: JoBApplication) {
+  constructor(jobApplication: JobApplicationProps) {
     this.companyName = jobApplication.companyName;
     this.position = jobApplication.position;
     this.applicationDate = jobApplication.applicationDate;
