@@ -1,16 +1,17 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { Briefcase } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Component } from "@/components/chart";
 
-type Application = {
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CountByMonth } from "@/components/bar-chart.count-by-month";
+import { getApplications } from "@/api/job_applications.api";
+
+export type Application = {
   id: number;
-  company: string;
+  companyName: string;
   position: string;
-  date: string;
-  status: "Em andamento" | "Rejeitado" | "Aceito";
+  applicationDate: string;
+  status: string;
   notes: string;
 };
 
@@ -18,41 +19,23 @@ export default function DashboardPage() {
   const [applications, setApplications] = useState<Application[]>([]);
 
   useEffect(() => {
-    const mockData: Application[] = [
-      {
-        id: 1,
-        company: "TechCorp",
-        position: "Frontend Developer",
-        date: "2023-05-01",
-        status: "Em andamento",
-        notes: "Entrevista técnica agendada",
-      },
-      {
-        id: 2,
-        company: "DataSys",
-        position: "Data Analyst",
-        date: "2023-05-15",
-        status: "Rejeitado",
-        notes: "Não atendeu aos requisitos",
-      },
-      {
-        id: 3,
-        company: "WebSolutions",
-        position: "Full Stack Developer",
-        date: "2023-06-01",
-        status: "Aceito",
-        notes: "Oferta aceita, início em 01/07",
-      },
-      {
-        id: 4,
-        company: "AITech",
-        position: "Machine Learning Engineer",
-        date: "2023-06-15",
-        status: "Em andamento",
-        notes: "Aguardando retorno após teste técnico",
-      },
-    ];
-    setApplications(mockData);
+    const get = async () => {
+      const data: Application[] | undefined = await getApplications();
+      if (data) {
+        const job_applications = data.map((app) => {
+          return {
+            id: app.id,
+            companyName: app.companyName,
+            position: app.position,
+            applicationDate: app.applicationDate,
+            status: app.status,
+            notes: app.notes,
+          };
+        });
+        setApplications(job_applications);
+      }
+    };
+    get();
   }, []);
 
   const stats = {
@@ -112,16 +95,8 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-
       <div className="mt-8 grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Candidaturas por Mês</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Component />
-          </CardContent>
-        </Card>
+        <CountByMonth />
       </div>
     </div>
   );
