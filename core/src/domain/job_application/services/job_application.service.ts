@@ -23,6 +23,49 @@ export class JobApplicationService {
     return jobApplication;
   }
 
+  async getCount(
+    year: number,
+  ): Promise<Promise<{ month: string; count: number }[]>> {
+    const result = await this.jobApplicationRepository.getCountByMonth(year);
+
+    const allMonths = [
+      'janeiro',
+      'fevereiro',
+      'março',
+      'abril',
+      'maio',
+      'junho',
+      'julho',
+      'agosto',
+      'setembro',
+      'outubro',
+      'novembro',
+      'dezembro',
+    ];
+
+    const countsByMonth = result.reduce(
+      (acc, item) => {
+        const month = new Date(item.applicationDate).toLocaleString('default', {
+          month: 'long',
+        });
+
+        if (!acc[month]) {
+          acc[month] = 0;
+        }
+        acc[month] += item._count;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+
+    const finalCounts = allMonths.map((month) => ({
+      month,
+      count: countsByMonth[month] || 0,
+    }));
+
+    return finalCounts;
+  }
+
   async create(
     createJobApplicationDto: CreateJobApplicationDto,
   ): Promise<JobApplication> {

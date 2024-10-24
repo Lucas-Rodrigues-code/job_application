@@ -26,6 +26,11 @@ export class JobApplicationController {
     return this.jobApplicationService.getById(id);
   }
 
+  @Get('count/by-month/:year')
+  async getCount(@Param('year', ParseIntPipe) year: number) {
+    return this.jobApplicationService.getCount(year);
+  }
+
   @Post()
   async create(@Body() createJobApplicationDto: CreateJobApplicationDto) {
     return this.jobApplicationService.create(createJobApplicationDto);
