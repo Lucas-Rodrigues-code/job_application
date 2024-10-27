@@ -31,6 +31,11 @@ export class JobApplicationController {
     return this.jobApplicationService.getCount(year);
   }
 
+  @Get('progress/:year')
+  async getProgress(@Param('year', ParseIntPipe) year: number) {
+    return this.jobApplicationService.getProgress(year);
+  }
+
   @Post()
   async create(@Body() createJobApplicationDto: CreateJobApplicationDto) {
     return this.jobApplicationService.create(createJobApplicationDto);

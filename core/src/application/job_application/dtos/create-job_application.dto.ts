@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, MinLength } from 'class-validator';
+import { IsDate, IsIn, IsNotEmpty, MinLength } from 'class-validator';
 
 export class CreateJobApplicationDto {
   @IsNotEmpty()
@@ -16,7 +16,7 @@ export class CreateJobApplicationDto {
   readonly applicationDate: Date;
 
   @IsNotEmpty()
-  @MinLength(3)
+  @IsIn(['Candidato', 'Entrevista Inicial', 'Em andamento', 'contratado'])
   readonly status: string;
 
   @IsNotEmpty()

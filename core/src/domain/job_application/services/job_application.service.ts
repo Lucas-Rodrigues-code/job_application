@@ -66,6 +66,10 @@ export class JobApplicationService {
     return finalCounts;
   }
 
+  async getProgress(year: number): Promise<Promise<any>> {
+    const result = await this.jobApplicationRepository.getProgressSelection(year);
+  }
+
   async create(
     createJobApplicationDto: CreateJobApplicationDto,
   ): Promise<JobApplication> {

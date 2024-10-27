@@ -41,6 +41,40 @@ export class JobApplicationRepository {
     return result;
   }
 
+  async getProgressSelection(year: number): Promise<any> {
+    const startDate = new Date(year, 0, 1); // 1st January of the given year
+    const endDate = new Date(year + 1, 0, 1); // 1st January of the next year
+
+    const applications = await this.prisma.jobApplication.groupBy({
+      by: ['status', 'applicationDate'],
+      _count: {
+        id: true, // Conta o número de registros em cada grupo
+      },
+    });
+
+    // Mapeando os dados para o formato desejado
+    const groupedData = {};
+
+    applications.forEach(({ status, applicationDate, _count }) => {
+      const month = applicationDate.getMonth(); // Extrai o mês do applicationDate (0 = janeiro)
+
+      if (!groupedData[status]) {
+        groupedData[status] = Array(12).fill(0); // Cria uma lista para cada mês com 0 valores iniciais
+      }
+
+      // Adiciona o valor ao mês correto
+      groupedData[status][month] += _count.id;
+    });
+    console.log(groupedData);
+    // Formatando no formato desejado
+    const result = Object.keys(groupedData).map((status) => ({
+      name: status,
+      data: groupedData[status],
+    }));
+
+    return result;
+  }
+
   async save(jobApplication: JobApplication): Promise<any> {
     return await this.prisma.jobApplication.create({
       data: {
