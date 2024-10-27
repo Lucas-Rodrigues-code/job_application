@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { Briefcase } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CountByMonth } from "@/components/bar-chart.count-by-month";
+import { CountByMonth } from "@/components/bar-chart-count-by-month";
 import { getApplications } from "@/api/job_applications.api";
+import { SelectionProcesses } from "@/components/selection-processes";
 
 export type Application = {
   id: number;
@@ -97,6 +98,7 @@ export default function DashboardPage() {
       </div>
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         <CountByMonth />
+        <SelectionProcesses />
       </div>
     </div>
   );
