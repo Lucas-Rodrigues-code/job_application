@@ -8,9 +8,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateNetworkingDto } from '../dtos/create-network.dto';
-import { UpdateNetworkingDto } from '../dtos/update-network.dto';
-import { NetworkService } from 'src/domain/network/services/network.service';
+import { CreateNetworkingDto } from './dtos/create-network.dto';
+import { UpdateNetworkingDto } from './dtos/update-network.dto';
+import { NetworkService } from 'src/network/network.service';
 
 @Controller('network')
 export class NetworkController {

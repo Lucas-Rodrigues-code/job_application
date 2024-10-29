@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { NetworkEntity } from '../entities/network.entity';
+import { NetworkEntity } from './entities/network.entity';
 
 import { CustomError } from 'src/utils/error';
-import { CreateNetworkingDto } from 'src/application/network/dtos/create-network.dto';
+import { CreateNetworkingDto } from 'src/network/dtos/create-network.dto';
 import { NetworkRepository } from 'src/infrastructure/repositories/network.repository';
 import { Network } from 'src/types/network';
 
