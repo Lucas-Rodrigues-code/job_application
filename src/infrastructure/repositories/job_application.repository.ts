@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
-import { JobApplication } from 'src/types/job-application';
+import { JobApplication } from 'src/shared/utils/types/job-application';
 
 interface ApplicationCountByMonth {
   _count: number;

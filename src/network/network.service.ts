@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { NetworkEntity } from './entities/network.entity';
 
-import { CustomError } from 'src/utils/error';
+import { CustomError } from 'src/shared/utils/error';
 import { CreateNetworkingDto } from 'src/network/dtos/create-network.dto';
 import { NetworkRepository } from 'src/infrastructure/repositories/network.repository';
-import { Network } from 'src/types/network';
+import { Network } from 'src/shared/utils/types/network';
 
 @Injectable()
 export class NetworkService {
