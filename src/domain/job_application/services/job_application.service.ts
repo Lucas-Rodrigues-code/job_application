@@ -66,8 +66,28 @@ export class JobApplicationService {
     return finalCounts;
   }
 
-  async getProgress(year: number): Promise<Promise<any>> {
-    const result = await this.jobApplicationRepository.getProgressSelection(year);
+  async getProgress(
+    year: number,
+  ): Promise<Promise<{ name: string; data: number[] }[]>> {
+    const applications =
+      await this.jobApplicationRepository.getProgressSelection(year);
+
+    const groupedData = {};
+
+    applications.forEach(({ status, applicationDate, _count }) => {
+      const month = applicationDate.getMonth();
+
+      if (!groupedData[status]) {
+        groupedData[status] = Array(12).fill(0);
+      }
+      groupedData[status][month] += _count;
+    });
+
+    const result = Object.keys(groupedData).map((status) => ({
+      name: status,
+      data: groupedData[status],
+    }));
+    return result;
   }
 
   async create(
