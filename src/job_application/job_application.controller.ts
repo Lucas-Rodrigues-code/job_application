@@ -8,9 +8,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { JobApplicationService } from 'src/domain/job_application/services/job_application.service';
-import { CreateJobApplicationDto } from '../dtos/create-job_application.dto';
-import { UpdateJobApplicationDto } from '../dtos/update-job_application.dto';
+import { JobApplicationService } from 'src/job_application/job_application.service';
+import { CreateJobApplicationDto } from './dtos/create-job_application.dto';
+import { UpdateJobApplicationDto } from './dtos/update-job_application.dto';
 
 @Controller('job-application')
 export class JobApplicationController {

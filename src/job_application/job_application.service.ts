@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CustomError } from 'src/utils/error';
-import { CreateJobApplicationDto } from 'src/application/job_application/dtos/create-job_application.dto';
+import { CreateJobApplicationDto } from 'src/job_application/dtos/create-job_application.dto';
 import { JobApplicationRepository } from 'src/infrastructure/repositories/job_application.repository';
 import { JobApplication } from 'src/types/job-application';
-import { JoBApplicationEntity } from '../entities/job_application.entity';
+import { JoBApplicationEntity } from './entities/job_application.entity';
 
 @Injectable()
 export class JobApplicationService {
