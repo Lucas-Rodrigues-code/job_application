@@ -23,7 +23,5 @@ export class UpdateJobApplicationDto {
   readonly status: string;
 
   @IsOptional()
-  @IsNotEmpty()
-  @MinLength(3)
   readonly notes: string;
 }
