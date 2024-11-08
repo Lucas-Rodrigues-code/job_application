@@ -7,6 +7,9 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
+  Req,
+  Request,
 } from '@nestjs/common';
 import { JobApplicationService } from 'src/job_application/job_application.service';
 import { CreateJobApplicationDto } from './dtos/create-job_application.dto';
@@ -17,8 +20,12 @@ export class JobApplicationController {
   constructor(private readonly jobApplicationService: JobApplicationService) {}
 
   @Get()
-  async getAll() {
-    return this.jobApplicationService.getAll();
+  async getAll(
+    @Query('skip', ParseIntPipe) skip: number,
+    @Query('take', ParseIntPipe) take: number,
+    @Req() req: Request,
+  ) {
+    return this.jobApplicationService.getAll(skip, take, req.url);
   }
 
   @Get(':id')

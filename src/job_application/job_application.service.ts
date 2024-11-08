@@ -5,14 +5,49 @@ import { JobApplicationRepository } from 'src/infrastructure/repositories/job_ap
 import { JobApplication } from 'src/shared/utils/types/job-application';
 import { JoBApplicationEntity } from './entities/job_application.entity';
 
+type JobApplicationResponse = {
+  total: number;
+  skip: number;
+  take: number;
+  next: string | null;
+  previous: string | null;
+  data: JobApplication[];
+};
 @Injectable()
 export class JobApplicationService {
   constructor(
     private readonly jobApplicationRepository: JobApplicationRepository,
   ) {}
 
-  async getAll(): Promise<JobApplication[]> {
-    return this.jobApplicationRepository.findAll();
+  async getAll(
+    skip: number,
+    take: number,
+    baseUrl: string,
+  ): Promise<JobApplicationResponse> {
+    const jobApplications = await this.jobApplicationRepository.findAll(
+      skip,
+      take,
+    );
+
+    const total = await this.jobApplicationRepository.contJobApplications();
+    const currentUrl = baseUrl.split('?')[0];
+
+    const next = skip + take;
+    const nextUrl =
+      next < total ? `${currentUrl}?skip=${next}&take=${take}` : null;
+
+    const previous = skip - take < 0 ? null : skip - take;
+    const previousUrl =
+      previous !== null ? `${currentUrl}?skip=${previous}&take=${take}` : null;
+
+    return {
+      total: total,
+      skip: skip,
+      take: take,
+      next: nextUrl,
+      previous: previousUrl,
+      data: jobApplications,
+    };
   }
 
   async getById(id: string): Promise<JobApplication> {

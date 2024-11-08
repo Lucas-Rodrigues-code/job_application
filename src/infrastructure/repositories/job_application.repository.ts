@@ -18,8 +18,21 @@ export class JobApplicationRepository {
   @Inject()
   private readonly prisma: PrismaService;
 
-  async findAll(): Promise<JobApplication[]> {
-    return await this.prisma.jobApplication.findMany();
+  async findAll(
+    skip: number = 0,
+    take: number = 10,
+  ): Promise<JobApplication[]> {
+    return await this.prisma.jobApplication.findMany({
+      skip,
+      take,
+      orderBy: {
+        applicationDate: 'desc',
+      },
+    });
+  }
+
+  async contJobApplications(): Promise<number> {
+    return this.prisma.jobApplication.count();
   }
 
   async findById(id: string): Promise<JobApplication | undefined> {
