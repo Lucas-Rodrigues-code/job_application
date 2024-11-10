@@ -21,8 +21,12 @@ export class JobApplicationRepository {
   async findAll(
     skip: number = 0,
     take: number = 10,
+    userId: string,
   ): Promise<JobApplication[]> {
     return await this.prisma.jobApplication.findMany({
+      where: {
+        userId,
+      },
       skip,
       take,
       orderBy: {
@@ -31,15 +35,23 @@ export class JobApplicationRepository {
     });
   }
 
-  async contJobApplications(): Promise<number> {
-    return this.prisma.jobApplication.count();
+  async contJobApplications(userId: string): Promise<number> {
+    return this.prisma.jobApplication.count({
+      where: { userId },
+    });
   }
 
-  async findById(id: string): Promise<JobApplication | undefined> {
-    return this.prisma.jobApplication.findUnique({ where: { id } });
+  async findById(
+    id: string,
+    userId: string,
+  ): Promise<JobApplication | undefined> {
+    return this.prisma.jobApplication.findUnique({ where: { id, userId } });
   }
 
-  async getCountByMonth(year: number): Promise<ApplicationCountByMonth[]> {
+  async getCountByMonth(
+    year: number,
+    userId: string,
+  ): Promise<ApplicationCountByMonth[]> {
     const startDate = new Date(year, 0, 1); // 1st January of the given year
     const endDate = new Date(year + 1, 0, 1); // 1st January of the next year
 
@@ -50,6 +62,7 @@ export class JobApplicationRepository {
           gte: startDate,
           lt: endDate,
         },
+        userId,
       },
       _count: true,
       orderBy: {
@@ -60,7 +73,10 @@ export class JobApplicationRepository {
     return result;
   }
 
-  async getProgressSelection(year: number): Promise<ProgressSelection[]> {
+  async getProgressSelection(
+    year: number,
+    userId: string,
+  ): Promise<ProgressSelection[]> {
     const startDate = new Date(year, 0, 1);
     const endDate = new Date(year + 1, 0, 1);
 
@@ -71,6 +87,7 @@ export class JobApplicationRepository {
           gte: startDate,
           lt: endDate,
         },
+        userId,
       },
       _count: true,
     });
@@ -78,7 +95,7 @@ export class JobApplicationRepository {
     return applications;
   }
 
-  async save(jobApplication: JobApplication): Promise<any> {
+  async save(jobApplication: JobApplication, userId: string): Promise<any> {
     return await this.prisma.jobApplication.create({
       data: {
         id: jobApplication.id,
@@ -88,16 +105,23 @@ export class JobApplicationRepository {
         status: jobApplication.status,
         notes: jobApplication.notes,
         updatedAt: jobApplication.updatedAt,
-        userId: '1', // implementar id do usuário logado
+        userId: userId,
       },
     });
   }
 
-  async update(id: string, body: JobApplication): Promise<JobApplication> {
-    return this.prisma.jobApplication.update({ where: { id }, data: body });
+  async update(
+    id: string,
+    body: JobApplication,
+    userId: string,
+  ): Promise<JobApplication> {
+    return this.prisma.jobApplication.update({
+      where: { id, userId },
+      data: body,
+    });
   }
 
-  async delete(id: string): Promise<JobApplication> {
-    return this.prisma.jobApplication.delete({ where: { id } });
+  async delete(id: string, userId: string): Promise<JobApplication> {
+    return this.prisma.jobApplication.delete({ where: { id, userId } });
   }
 }

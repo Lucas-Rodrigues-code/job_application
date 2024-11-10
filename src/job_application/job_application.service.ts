@@ -23,13 +23,16 @@ export class JobApplicationService {
     skip: number,
     take: number,
     baseUrl: string,
+    userId: string,
   ): Promise<JobApplicationResponse> {
     const jobApplications = await this.jobApplicationRepository.findAll(
       skip,
       take,
+      userId,
     );
 
-    const total = await this.jobApplicationRepository.contJobApplications();
+    const total =
+      await this.jobApplicationRepository.contJobApplications(userId);
     const currentUrl = baseUrl.split('?')[0];
 
     const next = skip + take;
@@ -50,8 +53,11 @@ export class JobApplicationService {
     };
   }
 
-  async getById(id: string): Promise<JobApplication> {
-    const jobApplication = await this.jobApplicationRepository.findById(id);
+  async getById(id: string, userId: string): Promise<JobApplication> {
+    const jobApplication = await this.jobApplicationRepository.findById(
+      id,
+      userId,
+    );
     if (!jobApplication) {
       throw new CustomError('Not found', 400);
     }
@@ -60,8 +66,12 @@ export class JobApplicationService {
 
   async getCount(
     year: number,
+    userId: string,
   ): Promise<Promise<{ month: string; count: number }[]>> {
-    const result = await this.jobApplicationRepository.getCountByMonth(year);
+    const result = await this.jobApplicationRepository.getCountByMonth(
+      year,
+      userId,
+    );
 
     const allMonths = [
       'janeiro',
@@ -103,9 +113,10 @@ export class JobApplicationService {
 
   async getProgress(
     year: number,
+    userId: string,
   ): Promise<Promise<{ name: string; data: number[] }[]>> {
     const applications =
-      await this.jobApplicationRepository.getProgressSelection(year);
+      await this.jobApplicationRepository.getProgressSelection(year, userId);
 
     const groupedData = {};
 
@@ -127,25 +138,32 @@ export class JobApplicationService {
 
   async create(
     createJobApplicationDto: CreateJobApplicationDto,
+    userId: string,
   ): Promise<JobApplication> {
     const newJobApplication = new JoBApplicationEntity(createJobApplicationDto);
 
-    return this.jobApplicationRepository.save(newJobApplication);
+    return this.jobApplicationRepository.save(newJobApplication, userId);
   }
 
-  async update(id: string, body: any): Promise<JobApplication> {
-    const JobApplication = await this.jobApplicationRepository.findById(id);
+  async update(id: string, body: any, userId: string): Promise<JobApplication> {
+    const JobApplication = await this.jobApplicationRepository.findById(
+      id,
+      userId,
+    );
     if (!JobApplication) {
       throw new CustomError('Not found', 400);
     }
-    return this.jobApplicationRepository.update(id, body);
+    return this.jobApplicationRepository.update(id, body, userId);
   }
 
-  async delete(id: string): Promise<JobApplication> {
-    const jobApplication = await this.jobApplicationRepository.findById(id);
+  async delete(id: string, userId: string): Promise<JobApplication> {
+    const jobApplication = await this.jobApplicationRepository.findById(
+      id,
+      userId,
+    );
     if (!jobApplication) {
       throw new CustomError('Not found', 400);
     }
-    return this.jobApplicationRepository.delete(id);
+    return this.jobApplicationRepository.delete(id, userId);
   }
 }
