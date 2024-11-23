@@ -20,7 +20,7 @@ O **Job Application Tracker** é uma aplicação projetada para acompanhar candi
 - **Gráficos**: Chart.js
 - **Inteligência Artificial (futuro)**: TensorFlow, Python
 
-## Instalação
+## Instalação.
 1. Clone o repositório:
    ```bash
    git clone https://github.com/seu-usuario/job-application-tracker.git
