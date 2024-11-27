@@ -13,6 +13,11 @@ type BodySignIn = {
   password: string;
 };
 
+type User = {
+  name: string;
+  email: string;
+}
+
 @Injectable()
 export class AuthService {
   constructor(private readonly userRepository: UserRepository) {}
@@ -20,7 +25,7 @@ export class AuthService {
   @Inject()
   private readonly jwtService: JwtService;
 
-  async signIn(params: BodySignIn): Promise<{ access_Token: string }> {
+  async signIn(params: BodySignIn): Promise<{ access_Token: string,user:User }> {
     const user = await this.userRepository.findByEmail(params.email);
     if (!user) throw new NotFoundException('User not found');
 
@@ -31,6 +36,10 @@ export class AuthService {
 
     return {
       access_Token: await this.jwtService.signAsync(payload),
+      user: {
+        name: user.name,
+        email: user.email,
+      },
     };
   }
 }
