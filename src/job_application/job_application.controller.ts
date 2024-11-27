@@ -61,6 +61,15 @@ export class JobApplicationController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('stats/:year')
+  async getStats(
+    @Param('year', ParseIntPipe) year: number,
+    @Req() req: Request,
+  ) {
+    return this.jobApplicationService.getStats(year, (req as any).sub.id);
+  }
+
+  @UseGuards(AuthGuard)
   @Post()
   async create(
     @Body() createJobApplicationDto: CreateJobApplicationDto,

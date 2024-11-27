@@ -8,3 +8,8 @@ export type JobApplication = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type Stats = {
+  status: string;
+  count: number;
+}

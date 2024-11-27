@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
-import { JobApplication } from 'src/shared/utils/types/job-application';
+import { JobApplication, Stats } from 'src/shared/utils/types/job-application';
 
 interface ApplicationCountByMonth {
   _count: number;
@@ -93,6 +93,33 @@ export class JobApplicationRepository {
     });
 
     return applications;
+  }
+
+  async getStats(
+    year: number,
+    userId: string,
+  ): Promise<Stats[]> {
+    const startDate = new Date(year, 0, 1);
+    const endDate = new Date(year + 1, 0, 1);
+
+    const applications = await this.prisma.jobApplication.groupBy({
+      by: ['status'],
+      where: {
+        applicationDate: {
+          gte: startDate,
+          lt: endDate,
+        },
+        userId,
+      },
+      _count: {
+        status: true,
+      },
+    });
+ 
+    return applications.map(app => ({
+      status: app.status,
+      count: app._count.status,
+    }));
   }
 
   async save(jobApplication: JobApplication, userId: string): Promise<any> {

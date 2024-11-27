@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CustomError } from 'src/shared/utils/error';
 import { CreateJobApplicationDto } from 'src/job_application/dtos/create-job_application.dto';
 import { JobApplicationRepository } from 'src/infrastructure/repositories/job_application.repository';
-import { JobApplication } from 'src/shared/utils/types/job-application';
+import { JobApplication, Stats } from 'src/shared/utils/types/job-application';
 import { JoBApplicationEntity } from './entities/job_application.entity';
 
 type JobApplicationResponse = {
@@ -134,6 +134,14 @@ export class JobApplicationService {
       data: groupedData[status],
     }));
     return result;
+  }
+
+  async getStats(year: number, userId: string): Promise<Promise<Stats[]>> {
+    const applications = await this.jobApplicationRepository.getStats(
+      year,
+      userId,
+    );
+    return applications;
   }
 
   async create(
