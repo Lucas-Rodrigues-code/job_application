@@ -22,7 +22,7 @@ export class CreateJobApplicationDto {
   readonly applicationDate: Date;
 
   @IsNotEmpty()
-  @IsIn(['candidato', 'Entrevista Inicial', 'Em andamento', 'contratado','rejeitado'])
+  @IsIn(['candidato', 'entrevista_inicial', 'em_andamento', 'contratado','rejeitado'])
   readonly status: string;
 
   @IsOptional()
